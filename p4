@@ -1,0 +1,33 @@
+import pandas as pd 
+ 
+# Function to implement the Find-S algorithm 
+def find_s_algorithm(training_data): 
+    # Initialize hypothesis with the first positive training example 
+    hypothesis = None 
+ 
+    for index, row in training_data.iterrows(): 
+        if row['PlayTennis'] == 'Yes':  # Consider only positive examples 
+            instance = row[:-1].values  # Exclude the target label 
+             
+            if hypothesis is None:  # First positive example initializes the hypothesis 
+                hypothesis = instance.copy() 
+            else: 
+                # Generalize the hypothesis where necessary 
+                for i in range(len(hypothesis)): 
+                    if hypothesis[i] != instance[i]: 
+                        hypothesis[i] = '?'  # Generalize attribute 
+         
+    return hypothesis 
+ 
+# Load dataset 
+df = pd.read_csv('playtennis.csv') 
+ 
+# Assuming column names in playtennis.csv are: Outlook, Temperature, Humidity, Wind, 
+PlayTennis 
+df.columns = ['Outlook', 'Temperature', 'Humidity', 'Wind', 'PlayTennis'] 
+ 
+# Run the Find-S algorithm 
+final_hypothesis = find_s_algorithm(df) 
+ 
+# Output the final hypothesis 
+print("Final Hypothesis:", final_hypothesis) 
